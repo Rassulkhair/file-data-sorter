@@ -15,7 +15,8 @@ public class FileProcessor {
 
     private List<File> fileList = new ArrayList<>();
 
-    public FileProcessor() {}
+    public FileProcessor() {
+    }
 
     // Загружает файлы и возвращает все строки
     public List<String> processFile(List<String> resourceNames) throws URISyntaxException {
@@ -32,7 +33,6 @@ public class FileProcessor {
         while (hasNextLine()) {
             processedLines.add(nextLine());
         }
-
         return processedLines;
     }
 
@@ -42,7 +42,6 @@ public class FileProcessor {
             if (allFilesRead) {
                 return false;
             }
-
             while (bufferedReader == null && currentFileIndex < fileList.size()) {
                 try {
                     bufferedReader = new BufferedReader(new FileReader(fileList.get(currentFileIndex)));
@@ -50,7 +49,6 @@ public class FileProcessor {
                     currentFileIndex++;
                 }
             }
-
             if (bufferedReader == null) {
                 allFilesRead = true;
                 return false;
@@ -67,7 +65,6 @@ public class FileProcessor {
                 currentFileIndex++;
                 return hasNextLine();
             }
-
         } catch (IOException e) {
             throw new RuntimeException("Ошибка чтения файла: " + e.getMessage(), e);
         }
