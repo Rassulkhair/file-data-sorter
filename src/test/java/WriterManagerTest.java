@@ -1,7 +1,4 @@
-import org.example.DataClassifier;
-import org.example.DataType;
-import org.example.FileProcessor;
-import org.example.WriterManager;
+import org.example.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,25 +25,26 @@ public class WriterManagerTest {
     public void testWriterMethod() throws IOException, URISyntaxException {
         FileProcessor fileProcessor = new FileProcessor();
         DataClassifier dataClassifier = new DataClassifier();
-        WriterManager writerManager = new WriterManager(prefix);
+        WriterManager writerManager = new WriterManager();
 
-        List<String> files = List.of("test1.txt", "test2.txt");
-        List<String> lines = fileProcessor.processFile(files);
+        List<String> fileNames = List.of("test1.txt", "test2.txt");
+        List<String> rawLines = fileProcessor.processFile(fileNames);
+        List<TypedLine> typedLines = new ArrayList<>();
 
-        for (String line : lines) {
-            DataType dataType = dataClassifier.classify(line);
-            writerManager.write(dataType, line);
+        for (String line : rawLines) {
+            DataType type = dataClassifier.classify(line);
+            typedLines.add(new TypedLine(type, line));
         }
 
-        writerManager.close();
+        writerManager.process(prefix, typedLines);
 
-        //Делаем проверку создались ли файлы
+        // Проверка существования файлов
         assertTrue(new File(prefix + "int.txt").exists());
         assertTrue(new File(prefix + "float.txt").exists());
         assertTrue(new File(prefix + "string.txt").exists());
 
 
-        //Делаем проверку на содержимое файлов
+
         List<String> intLines = Files.readAllLines(new File(prefix + "int.txt").toPath());
         List<String> floatLines = Files.readAllLines(new File(prefix + "float.txt").toPath());
         List<String> stringLines = Files.readAllLines(new File(prefix + "string.txt").toPath());
