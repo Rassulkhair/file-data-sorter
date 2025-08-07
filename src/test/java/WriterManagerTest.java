@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WriterManagerTest {
@@ -22,7 +23,7 @@ public class WriterManagerTest {
     }
 
     @Test
-    public void testWriterMethod() throws IOException, URISyntaxException {
+    public void testWriterMethodWithAppend() throws IOException, URISyntaxException {
         FileProcessor fileProcessor = new FileProcessor();
         DataClassifier dataClassifier = new DataClassifier();
         WriterManager writerManager = new WriterManager();
@@ -36,13 +37,12 @@ public class WriterManagerTest {
             typedLines.add(new TypedLine(type, line));
         }
 
-        writerManager.process(prefix, typedLines);
+        writerManager.process("", prefix, typedLines, true);
 
         // Проверка существования файлов
         assertTrue(new File(prefix + "int.txt").exists());
         assertTrue(new File(prefix + "float.txt").exists());
         assertTrue(new File(prefix + "string.txt").exists());
-
 
 
         List<String> intLines = Files.readAllLines(new File(prefix + "int.txt").toPath());
@@ -53,7 +53,69 @@ public class WriterManagerTest {
         System.out.println("Float: " + floatLines);
         System.out.println("String: " + stringLines);
         System.out.println(new File(prefix + "int.txt").getAbsolutePath());
+    }
+
+    @Test
+    public void testWriterMethodWithOutAppend() throws IOException, URISyntaxException {
+        FileProcessor fileProcessor = new FileProcessor();
+        DataClassifier dataClassifier = new DataClassifier();
+        WriterManager writerManager = new WriterManager();
+
+        List<String> fileNames = List.of("test1.txt", "test2.txt");
+        List<String> rawLines = fileProcessor.processFile(fileNames);
+        List<TypedLine> typedLines = new ArrayList<>();
+
+        for (String line : rawLines) {
+            DataType type = dataClassifier.classify(line);
+            typedLines.add(new TypedLine(type, line));
+        }
+
+        writerManager.process("", prefix, typedLines, false);
+
+        // Проверка существования файлов
+        assertTrue(new File(prefix + "int.txt").exists());
+        assertTrue(new File(prefix + "float.txt").exists());
+        assertTrue(new File(prefix + "string.txt").exists());
 
 
+        List<String> intLines = Files.readAllLines(new File(prefix + "int.txt").toPath());
+        List<String> floatLines = Files.readAllLines(new File(prefix + "float.txt").toPath());
+        List<String> stringLines = Files.readAllLines(new File(prefix + "string.txt").toPath());
+
+        System.out.println("Int: " + intLines);
+        System.out.println("Float: " + floatLines);
+        System.out.println("String: " + stringLines);
+        System.out.println(new File(prefix + "int.txt").getAbsolutePath());
+    }
+
+    @Test
+    public void testWriterMethodWithoutFloat() throws IOException, URISyntaxException {
+        FileProcessor fileProcessor = new FileProcessor();
+        DataClassifier dataClassifier = new DataClassifier();
+        WriterManager writerManager = new WriterManager();
+
+        List<String> fileNames = List.of("test3.txt");
+        List<String> rawLines = fileProcessor.processFile(fileNames);
+        List<TypedLine> typedLines = new ArrayList<>();
+
+        for (String line : rawLines) {
+            DataType type = dataClassifier.classify(line);
+            typedLines.add(new TypedLine(type, line));
+        }
+
+        writerManager.process("", prefix, typedLines, true);
+
+        // Проверка существования файлов
+        assertTrue(new File(prefix + "int.txt").exists());
+        assertFalse(new File(prefix + "float.txt").exists());
+        assertTrue(new File(prefix + "string.txt").exists());
+
+
+        List<String> intLines = Files.readAllLines(new File(prefix + "int.txt").toPath());
+        List<String> stringLines = Files.readAllLines(new File(prefix + "string.txt").toPath());
+
+        System.out.println("Int: " + intLines);
+        System.out.println("String: " + stringLines);
+        System.out.println(new File(prefix + "int.txt").getAbsolutePath());
     }
 }
