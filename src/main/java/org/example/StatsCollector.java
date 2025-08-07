@@ -27,16 +27,16 @@ public class StatsCollector {
 
     public void collect(List<TypedLine> lines) {
         // Обрабатываем INTEGER
-        List<Integer> ints = lines.stream()
+        List<Long> ints = lines.stream()
                 .filter(t -> t.type == DataType.INTEGER)
-                .map(t -> Integer.parseInt(t.line))
+                .map(t -> Long.parseLong(t.line))
                 .toList();
 
         if (!ints.isEmpty()) {
             intCount = ints.size();
             intSum = ints.stream().mapToLong(i -> i).sum();
-            intMin = ints.stream().mapToInt(i -> i).min().orElse(0);
-            intMax = ints.stream().mapToInt(i -> i).max().orElse(0);
+            intMin = ints.stream().mapToLong(i -> i).min().orElse(0);
+            intMax = ints.stream().mapToLong(i -> i).max().orElse(0);
             intAvg = intSum / intCount;
         }
 

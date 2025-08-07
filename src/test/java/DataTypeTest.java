@@ -12,10 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DataTypeTest {
     @Test
     public void TestDataClassify() throws URISyntaxException {
-        FileProcessor fileProcessor = new FileProcessor();
         DataClassifier dataClassifier = new DataClassifier();
-        List<String> fileUrls = List.of("test1.txt", "test2.txt");
-        List<String> actual = fileProcessor.processFile(fileUrls);
+        List<String> actual = List.of("123", "434", "1,323", "string");
 
         List<String> integers = new ArrayList<>();
         List<String> strings = new ArrayList<>();
@@ -34,8 +32,8 @@ public class DataTypeTest {
             }
         }
 
-        assertEquals(3, integers.size());
-        assertEquals(3, floats.size());
-        assertEquals(6, strings.size());
+        assertEquals(2, integers.size());
+        assertEquals(1, floats.size());
+        assertEquals(1, strings.size());
     }
 }

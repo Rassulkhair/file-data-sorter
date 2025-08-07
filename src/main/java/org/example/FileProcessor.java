@@ -25,7 +25,12 @@ public class FileProcessor {
 
         // Загружаем файлы из ресурсов
         for (String name : resourceNames) {
-            File file = new File(classLoader.getResource(name).toURI());
+            File file = new File(name);
+            if (!file.exists()) {
+                System.err.println("Файл не найден: " + name);
+                continue;
+            }
+
             fileList.add(file);
         }
 

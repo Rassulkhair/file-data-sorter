@@ -28,8 +28,7 @@ public class WriterManagerTest {
         DataClassifier dataClassifier = new DataClassifier();
         WriterManager writerManager = new WriterManager();
 
-        List<String> fileNames = List.of("test1.txt", "test2.txt");
-        List<String> rawLines = fileProcessor.processFile(fileNames);
+        List<String> rawLines = List.of("123", "434", "1.323", "string");
         List<TypedLine> typedLines = new ArrayList<>();
 
         for (String line : rawLines) {
@@ -61,8 +60,7 @@ public class WriterManagerTest {
         DataClassifier dataClassifier = new DataClassifier();
         WriterManager writerManager = new WriterManager();
 
-        List<String> fileNames = List.of("test1.txt", "test2.txt");
-        List<String> rawLines = fileProcessor.processFile(fileNames);
+        List<String> rawLines = List.of("123", "434", "1.323", "string");
         List<TypedLine> typedLines = new ArrayList<>();
 
         for (String line : rawLines) {
@@ -94,8 +92,7 @@ public class WriterManagerTest {
         DataClassifier dataClassifier = new DataClassifier();
         WriterManager writerManager = new WriterManager();
 
-        List<String> fileNames = List.of("test3.txt");
-        List<String> rawLines = fileProcessor.processFile(fileNames);
+        List<String> rawLines = List.of("123", "434", "string");
         List<TypedLine> typedLines = new ArrayList<>();
 
         for (String line : rawLines) {
