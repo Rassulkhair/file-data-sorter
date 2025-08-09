@@ -49,7 +49,7 @@
 ## Формат запуска
 
 ```bash
-java -jar target/util-1.0.jar -s -p output- in1.txt in2.txt
+java -jar target/util-1.jar -s -p output- in1.txt in2.txt
 ```
 ---
 
